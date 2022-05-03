@@ -25,10 +25,18 @@ class UserServiceImpl(
      */
     override fun get(id: Int): UserDto? {
         val user = db.search(id)
-        if (user != null) {
-            return user.toUserDto()
+        return when (user != null) {
+            true -> user.toUserDto()
+            false -> null
         }
-        return null
+    }
+
+    override fun getAll(): List<UserDto> {
+        val userDtoList = mutableListOf<UserDto>()
+        db.searchAll().forEach {
+            userDtoList.add(it.toUserDto())
+        }
+        return userDtoList
     }
 
     /**

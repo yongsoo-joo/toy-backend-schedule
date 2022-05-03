@@ -4,5 +4,6 @@ interface RestService<T> {
     fun add(e: T): Int
     fun update(e: T): Boolean
     fun get(id: Int): T?
+    fun getAll(): List<T>
     fun delete(id: Int): Boolean
 }
