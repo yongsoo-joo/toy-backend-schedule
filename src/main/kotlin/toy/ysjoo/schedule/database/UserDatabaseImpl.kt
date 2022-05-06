@@ -16,7 +16,7 @@ class UserDatabaseImpl(
     }
 
     /**
-     *®®
+     *
      */
     override fun add(data: User, isAutoIndex: Boolean): Int {
         val idx = when (isAutoIndex) {
@@ -57,7 +57,6 @@ class UserDatabaseImpl(
      *
      */
     override fun update(id: Int, data: User): Boolean {
-
         var isUpdate = false
 
         userList.forEachIndexed { idx, user ->
@@ -86,7 +85,10 @@ class UserDatabaseImpl(
      *
      */
     override fun search(id: Int): User? {
-        userList.forEach { user -> if (user.id == id) return user }
+        userList.forEach { user ->
+            if (user.id == id)
+                return user
+        }
         return null
     }
 
@@ -98,7 +100,10 @@ class UserDatabaseImpl(
      *
      */
     override fun search(data: User): Int? {
-        userList.forEach { user -> if (data == user) return user.id }
+        userList.forEach { user ->
+            if (data == user)
+                return user.id
+        }
         return null
     }
 }

@@ -5,19 +5,19 @@ import toy.ysjoo.schedule.dto.UserDto
 import toy.ysjoo.schedule.service.UserServiceImpl
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/user")
 class UserController {
 
-    val userService = UserServiceImpl()
+    private val userService = UserServiceImpl()
 
     // Create User
     @PostMapping
     fun addUser(@RequestBody user: UserDto): String {
         println("request to add user, data = $user")
         val id = userService.add(user)
-        return when (id < 1) {
-            true -> "fail to add user, already exist user id = ${user.id}"
-            false -> "success to add user, id = $id"
+        return when (id > 0) {
+            true -> "success to add user, id = $id"
+            false -> "fail to add user, already exist user id = ${user.id}"
         }
     }
 
@@ -34,11 +34,12 @@ class UserController {
 
     // Read User
     @GetMapping("/all")
-    fun getUser(): String {
+    fun getUserAll(): String {
         println("request to get all user info!")
         val userList = userService.getAll()
         return when (userList.isNotEmpty()) {
-            true -> "success to get all user info, total num = ${userList.size} \n >> user list = $userList"
+            true -> "success to get all user info, total num = ${userList.size}" +
+                    "\n >> user list = $userList"
             false -> "don't exist user info!"
         }
     }
@@ -58,8 +59,8 @@ class UserController {
     fun deleteUser(@PathVariable id: Int): String {
         println("request to delete user, id = $id")
         return when (userService.delete(id)) {
-            true -> "success to delete user"
-            false -> "fail to delete user"
+            true -> "success to delete user, id = $id"
+            false -> "fail to delete user, id = $id"
         }
     }
 }
