@@ -6,10 +6,9 @@ import toy.ysjoo.schedule.service.UserServiceImpl
 
 @RestController
 @RequestMapping("/user")
-class UserController {
-
-    private val userService = UserServiceImpl()
-
+class UserController(
+    private val userService: UserServiceImpl
+) {
     // Create User
     @PostMapping
     fun addUser(@RequestBody user: UserDto): String {
@@ -23,7 +22,7 @@ class UserController {
 
     // Read User
     @GetMapping("/{id}")
-    fun getUser(@PathVariable id: Int): String {
+    fun getUser(@PathVariable id: Long): String {
         println("request to get user, id = $id")
         val user = userService.get(id)
         return when (user != null) {
@@ -56,7 +55,7 @@ class UserController {
 
     // Delete User
     @DeleteMapping("/{id}")
-    fun deleteUser(@PathVariable id: Int): String {
+    fun deleteUser(@PathVariable id: Long): String {
         println("request to delete user, id = $id")
         return when (userService.delete(id)) {
             true -> "success to delete user, id = $id"

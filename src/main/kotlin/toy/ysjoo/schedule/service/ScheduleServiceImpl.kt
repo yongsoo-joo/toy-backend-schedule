@@ -1,33 +1,48 @@
 package toy.ysjoo.schedule.service
 
-import toy.ysjoo.schedule.database.ScheduleDatabaseImpl
+import org.springframework.data.repository.findByIdOrNull
+import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import toy.ysjoo.schedule.dto.ScheduleDto
+import toy.ysjoo.schedule.repository.ScheduleRepository
 
+
+@Service
 class ScheduleServiceImpl(
-    private val db: ScheduleDatabaseImpl = ScheduleDatabaseImpl()
+    private val repository: ScheduleRepository
 ) : RestService<ScheduleDto> {
 
     /**
      *
      */
-    override fun add(e: ScheduleDto): Int {
-        return db.add(e.toSchedule())
+    @Transactional
+    override fun add(e: ScheduleDto): Long {
+        val res = repository.save(e.toSchedule())
+        return res.id
     }
 
     /**
      *
      */
+    @Transactional
     override fun update(e: ScheduleDto): Boolean {
-        return db.update(e.toSchedule())
+        val res = repository.findByIdOrNull(e.id)
+        return when (res != null) {
+            true -> {
+                res.update(e)
+            }
+            false -> false
+        }
     }
 
     /**
      *
      */
-    override fun get(id: Int): ScheduleDto? {
-        val schedule = db.search(id)
-        return when (schedule != null) {
-            true -> schedule.toScheduleDto()
+    @Transactional(readOnly = true)
+    override fun get(id: Long): ScheduleDto? {
+        val res = repository.findByIdOrNull(id)
+        return when (res != null) {
+            true -> res.toScheduleDto()
             false -> null
         }
     }
@@ -35,9 +50,11 @@ class ScheduleServiceImpl(
     /**
      *
      */
+    @Transactional(readOnly = true)
     override fun getAll(): List<ScheduleDto> {
         val scheduleDtoList = mutableListOf<ScheduleDto>()
-        db.searchAll().forEach {
+        val res = repository.findAll()
+        res.forEach {
             scheduleDtoList.add(it.toScheduleDto())
         }
         return scheduleDtoList
@@ -46,7 +63,15 @@ class ScheduleServiceImpl(
     /**
      *
      */
-    override fun delete(id: Int): Boolean {
-        return db.delete(id)
+    @Transactional
+    override fun delete(id: Long): Boolean {
+        val res = repository.findByIdOrNull(id)
+        return when (res != null) {
+            true -> {
+                repository.delete(res)
+                true
+            }
+            false -> false
+        }
     }
 }

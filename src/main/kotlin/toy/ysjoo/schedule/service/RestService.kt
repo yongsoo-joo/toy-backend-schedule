@@ -1,9 +1,9 @@
 package toy.ysjoo.schedule.service
 
 interface RestService<T> {
-    fun add(e: T): Int
+    fun add(e: T): Long
     fun update(e: T): Boolean
-    fun get(id: Int): T?
+    fun get(id: Long): T?
     fun getAll(): List<T>
-    fun delete(id: Int): Boolean
+    fun delete(id: Long): Boolean
 }

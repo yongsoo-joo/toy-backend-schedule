@@ -1,39 +1,55 @@
 package toy.ysjoo.schedule.service
 
-import toy.ysjoo.schedule.database.UserDatabaseImpl
+import org.springframework.data.repository.findByIdOrNull
+import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import toy.ysjoo.schedule.dto.UserDto
+import toy.ysjoo.schedule.repository.UserRepository
 
+@Service
 class UserServiceImpl(
-    private val db: UserDatabaseImpl = UserDatabaseImpl()
+    private val repository: UserRepository
 ) : RestService<UserDto> {
     /**
      *
      */
-    override fun add(e: UserDto): Int {
-        return db.add(e.toUser())
+    @Transactional
+    override fun add(e: UserDto): Long {
+        val res = repository.save(e.toUser())
+        return res.id
     }
 
     /**
      *
      */
+    @Transactional
     override fun update(e: UserDto): Boolean {
-        return db.update(e.toUser())
+        val res = repository.findByIdOrNull(e.id)
+        return when (res != null) {
+            true -> {
+                res.update(e)
+            }
+            false -> false
+        }
     }
 
     /**
      *
      */
-    override fun get(id: Int): UserDto? {
-        val user = db.search(id)
-        return when (user != null) {
-            true -> user.toUserDto()
+    @Transactional(readOnly = true)
+    override fun get(id: Long): UserDto? {
+        val res = repository.findByIdOrNull(id)
+        return when (res != null) {
+            true -> res.toUserDto()
             false -> null
         }
     }
 
+    @Transactional(readOnly = true)
     override fun getAll(): List<UserDto> {
         val userDtoList = mutableListOf<UserDto>()
-        db.searchAll().forEach {
+        val res = repository.findAll()
+        res.forEach {
             userDtoList.add(it.toUserDto())
         }
         return userDtoList
@@ -42,7 +58,15 @@ class UserServiceImpl(
     /**
      *
      */
-    override fun delete(id: Int): Boolean {
-        return db.delete(id)
+    @Transactional
+    override fun delete(id: Long): Boolean {
+        val res = repository.findByIdOrNull(id)
+        return when (res != null) {
+            true -> {
+                repository.delete(res)
+                true
+            }
+            false -> false
+        }
     }
 }

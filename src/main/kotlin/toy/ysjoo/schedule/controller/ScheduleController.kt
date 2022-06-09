@@ -6,9 +6,9 @@ import toy.ysjoo.schedule.service.ScheduleServiceImpl
 
 @RestController
 @RequestMapping("/schedule")
-class ScheduleController {
-
-    private val scheduleService = ScheduleServiceImpl()
+class ScheduleController(
+    private val scheduleService: ScheduleServiceImpl
+) {
 
     // Create Schedule
     @PostMapping
@@ -23,7 +23,7 @@ class ScheduleController {
 
     // Read Schedule
     @GetMapping("/{id}")
-    fun getSchedule(@PathVariable id: Int): String {
+    fun getSchedule(@PathVariable id: Long): String {
         println("request to get schedule, id = $id")
         val schedule = scheduleService.get(id)
         return when (schedule != null) {
@@ -56,7 +56,7 @@ class ScheduleController {
 
     // Delete Schedule
     @DeleteMapping("/{id}")
-    fun deleteSchedule(@PathVariable id: Int): String {
+    fun deleteSchedule(@PathVariable id: Long): String {
         println("request to delete schedule, id = $id")
         return when (scheduleService.delete(id)) {
             true -> "success to delete schedule, id = $id"

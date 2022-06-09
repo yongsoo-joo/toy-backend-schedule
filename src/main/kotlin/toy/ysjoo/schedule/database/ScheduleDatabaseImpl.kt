@@ -3,13 +3,13 @@ package toy.ysjoo.schedule.database
 import toy.ysjoo.schedule.domain.Schedule
 
 class ScheduleDatabaseImpl(
-    private var index: Int = 0,
+    private var index: Long = 0,
     private val scheduleList: MutableList<Schedule> = mutableListOf()
 ) : MemoryDatabase<Schedule> {
     /**
      *
      */
-    override fun add(id: Int, data: Schedule): Boolean {
+    override fun add(id: Long, data: Schedule): Boolean {
         data.id = id
         return add(data, false) > 0
     }
@@ -17,7 +17,7 @@ class ScheduleDatabaseImpl(
     /**
      *
      */
-    override fun add(data: Schedule, isAutoIndex: Boolean): Int {
+    override fun add(data: Schedule, isAutoIndex: Boolean): Long {
         val idx = when (isAutoIndex) {
             true -> {
                 while (search(++index) != null) Unit
@@ -39,7 +39,7 @@ class ScheduleDatabaseImpl(
     /**
      *
      */
-    override fun delete(id: Int): Boolean {
+    override fun delete(id: Long): Boolean {
         return when (scheduleList.removeIf { schedule -> (schedule.id == id) }) {
             true -> {
                 println("[delete] update scheduleLsit : $scheduleList")
@@ -62,7 +62,7 @@ class ScheduleDatabaseImpl(
     /**
      *
      */
-    override fun update(id: Int, data: Schedule): Boolean {
+    override fun update(id: Long, data: Schedule): Boolean {
         var isUpdate = false
 
         scheduleList.forEachIndexed { idx, schedule ->
@@ -83,7 +83,7 @@ class ScheduleDatabaseImpl(
     /**
      *
      */
-    override fun search(id: Int): Schedule? {
+    override fun search(id: Long): Schedule? {
         scheduleList.forEach { schedule ->
             if (schedule.id == id)
                 return schedule
@@ -101,7 +101,7 @@ class ScheduleDatabaseImpl(
     /**
      *
      */
-    override fun search(data: Schedule): Int? {
+    override fun search(data: Schedule): Long? {
         scheduleList.forEach { user ->
             if (data == user)
                 return user.id
