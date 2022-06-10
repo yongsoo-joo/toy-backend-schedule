@@ -4,12 +4,14 @@ import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import toy.ysjoo.schedule.dto.ScheduleDto
+import toy.ysjoo.schedule.mapper.ScheduleMapper
 import toy.ysjoo.schedule.repository.ScheduleRepository
 
 
 @Service
 class ScheduleServiceImpl(
-    private val repository: ScheduleRepository
+    private val repository: ScheduleRepository,
+    private val scheduleMapper: ScheduleMapper
 ) : RestService<ScheduleDto> {
 
     /**
@@ -17,7 +19,7 @@ class ScheduleServiceImpl(
      */
     @Transactional
     override fun add(e: ScheduleDto): Long {
-        val res = repository.save(e.toSchedule())
+        val res = repository.save(scheduleMapper.toDomain(e))
         return res.id
     }
 
@@ -29,7 +31,8 @@ class ScheduleServiceImpl(
         val res = repository.findByIdOrNull(e.id)
         return when (res != null) {
             true -> {
-                res.update(e)
+                scheduleMapper.update(e, res)
+                true
             }
             false -> false
         }
@@ -42,7 +45,7 @@ class ScheduleServiceImpl(
     override fun get(id: Long): ScheduleDto? {
         val res = repository.findByIdOrNull(id)
         return when (res != null) {
-            true -> res.toScheduleDto()
+            true -> scheduleMapper.toDto(res)
             false -> null
         }
     }
@@ -55,7 +58,7 @@ class ScheduleServiceImpl(
         val scheduleDtoList = mutableListOf<ScheduleDto>()
         val res = repository.findAll()
         res.forEach {
-            scheduleDtoList.add(it.toScheduleDto())
+            scheduleDtoList.add(scheduleMapper.toDto(it))
         }
         return scheduleDtoList
     }

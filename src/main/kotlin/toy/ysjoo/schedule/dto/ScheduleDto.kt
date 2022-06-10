@@ -1,7 +1,5 @@
 package toy.ysjoo.schedule.dto
 
-import toy.ysjoo.schedule.domain.Schedule
-
 data class ScheduleDto(
     var id: Long = 0,
     var title: String? = null,
@@ -11,8 +9,4 @@ data class ScheduleDto(
     var enddate: String? = null,
     var owner: Long = 0,
     var attendees: MutableList<Long>
-) {
-    fun toSchedule(): Schedule {
-        return Schedule(id, title, contents, location, startdate, enddate, owner, attendees)
-    }
-}
+)

@@ -4,30 +4,32 @@ import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import toy.ysjoo.schedule.dto.UserDto
+import toy.ysjoo.schedule.mapper.UserMapper
 import toy.ysjoo.schedule.repository.UserRepository
 
 @Service
+@Transactional
 class UserServiceImpl(
-    private val repository: UserRepository
+    private val repository: UserRepository,
+    private val userMapper: UserMapper
 ) : RestService<UserDto> {
     /**
      *
      */
-    @Transactional
     override fun add(e: UserDto): Long {
-        val res = repository.save(e.toUser())
+        val res = repository.save(userMapper.toDomain(e))
         return res.id
     }
 
     /**
      *
      */
-    @Transactional
     override fun update(e: UserDto): Boolean {
         val res = repository.findByIdOrNull(e.id)
         return when (res != null) {
             true -> {
-                res.update(e)
+                userMapper.update(e, res)
+                true
             }
             false -> false
         }
@@ -40,7 +42,7 @@ class UserServiceImpl(
     override fun get(id: Long): UserDto? {
         val res = repository.findByIdOrNull(id)
         return when (res != null) {
-            true -> res.toUserDto()
+            true -> userMapper.toDto(res)
             false -> null
         }
     }
@@ -50,7 +52,7 @@ class UserServiceImpl(
         val userDtoList = mutableListOf<UserDto>()
         val res = repository.findAll()
         res.forEach {
-            userDtoList.add(it.toUserDto())
+            userDtoList.add(userMapper.toDto(it))
         }
         return userDtoList
     }
@@ -58,7 +60,6 @@ class UserServiceImpl(
     /**
      *
      */
-    @Transactional
     override fun delete(id: Long): Boolean {
         val res = repository.findByIdOrNull(id)
         return when (res != null) {

@@ -1,6 +1,5 @@
 package toy.ysjoo.schedule.domain
 
-import toy.ysjoo.schedule.dto.ScheduleDto
 import javax.persistence.*
 
 @Entity
@@ -31,21 +30,4 @@ data class Schedule(
     @ElementCollection(fetch = FetchType.LAZY)
     @Column(name = "attendees")
     var attendees: MutableList<Long>
-) {
-    fun toScheduleDto(): ScheduleDto {
-        return ScheduleDto(id, title, contents, location, startDate, endDate, owner, attendees)
-    }
-
-    fun update(s: ScheduleDto): Boolean {
-        this.id = s.id
-        this.title = s.title
-        this.contents = s.contents
-        this.location = s.location
-        this.startDate = s.startdate
-        this.endDate = s.enddate
-        this.owner = s.owner
-        this.attendees.addAll(s.attendees)
-        return true
-    }
-
-}
+)

@@ -3,17 +3,20 @@ package toy.ysjoo.schedule.service
 import org.springframework.stereotype.Service
 import toy.ysjoo.schedule.database.UserDatabaseImpl
 import toy.ysjoo.schedule.dto.UserDto
+import toy.ysjoo.schedule.mapper.UserMapper
 import javax.transaction.Transactional
 
 @Service
 class UserServiceMemoryImpl(
-    private val db: UserDatabaseImpl = UserDatabaseImpl()
+    private val userMapper: UserMapper
 ) : RestService<UserDto> {
+    private val db: UserDatabaseImpl = UserDatabaseImpl()
+
     /**
      *
      */
     override fun add(e: UserDto): Long {
-        return db.add(e.toUser())
+        return db.add(userMapper.toDomain(e))
     }
 
     /**
@@ -21,7 +24,7 @@ class UserServiceMemoryImpl(
      */
     @Transactional
     override fun update(e: UserDto): Boolean {
-        return db.update(e.toUser())
+        return db.update(userMapper.toDomain(e))
     }
 
     /**
@@ -30,7 +33,7 @@ class UserServiceMemoryImpl(
     override fun get(id: Long): UserDto? {
         val user = db.search(id)
         return when (user != null) {
-            true -> user.toUserDto()
+            true -> userMapper.toDto(user)
             false -> null
         }
     }
@@ -38,7 +41,7 @@ class UserServiceMemoryImpl(
     override fun getAll(): List<UserDto> {
         val userDtoList = mutableListOf<UserDto>()
         db.searchAll().forEach {
-            userDtoList.add(it.toUserDto())
+            userDtoList.add(userMapper.toDto(it))
         }
         return userDtoList
     }

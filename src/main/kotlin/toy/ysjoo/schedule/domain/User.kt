@@ -1,6 +1,5 @@
 package toy.ysjoo.schedule.domain
 
-import toy.ysjoo.schedule.dto.UserDto
 import javax.persistence.*
 
 @Entity
@@ -21,16 +20,4 @@ data class User(
 
     @Column(name = "role")
     var role: String? = null
-) {
-    fun toUserDto(): UserDto {
-        return UserDto(id, name, address, phoneNumber, role)
-    }
-
-    fun update(u: UserDto): Boolean {
-        this.name = u.name
-        this.address = u.address
-        this.phoneNumber = u.phoneNumber
-        this.role = u.role
-        return true
-    }
-}
+)

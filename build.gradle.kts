@@ -4,6 +4,7 @@ plugins {
     id("org.springframework.boot") version "2.6.7"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
     kotlin("jvm") version "1.6.21"
+    kotlin("kapt") version "1.6.21"
     kotlin("plugin.spring") version "1.6.21"
     kotlin("plugin.jpa") version "1.6.21"
     id("org.jetbrains.kotlin.plugin.allopen") version "1.6.21"
@@ -32,6 +33,11 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+
+    // mapstruct
+    implementation("org.mapstruct:mapstruct:1.5.1.Final")
+    kapt("org.mapstruct:mapstruct-processor:1.5.1.Final")
+
     //maria DB
     runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
 
@@ -39,6 +45,15 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+}
+
+kapt {
+    arguments {
+        // Set Mapstruct Configuration options here
+        // https://kotlinlang.org/docs/reference/kapt.html#annotation-processor-arguments
+        // https://mapstruct.org/documentation/stable/reference/html/#configuration-options
+        // arg("mapstruct.defaultComponentModel", "spring")
+    }
 }
 
 noArg {
