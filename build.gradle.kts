@@ -40,6 +40,9 @@ dependencies {
 
     //maria DB
     runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
+    
+    //flyway
+    implementation("org.flywaydb:flyway-core")
 
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
