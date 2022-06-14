@@ -14,6 +14,7 @@ plugins {
 group = "toy.ysjoo"
 version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_1_8
+val querydslVersion = "5.0.0"
 
 configurations {
     compileOnly {
@@ -26,7 +27,7 @@ repositories {
 }
 
 dependencies {
-    //spring
+    // spring
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 
@@ -38,16 +39,26 @@ dependencies {
     implementation("org.mapstruct:mapstruct:1.5.1.Final")
     kapt("org.mapstruct:mapstruct-processor:1.5.1.Final")
 
-    //maria DB
+    // maria DB
     runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
-    
-    //flyway
+
+    // flyway
     implementation("org.flywaydb:flyway-core")
+
+    // querydsl
+    implementation("com.querydsl:querydsl-jpa:$querydslVersion")
+    kapt("com.querydsl:querydsl-apt:$querydslVersion:jpa")
+    kapt("org.springframework.boot:spring-boot-configuration-processor")
 
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+}
+
+// querydsl
+kotlin.sourceSets.main {
+    setBuildDir("$buildDir/generated/source/kapt/main")
 }
 
 kapt {

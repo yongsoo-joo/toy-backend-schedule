@@ -5,4 +5,4 @@ import org.springframework.stereotype.Repository
 import toy.ysjoo.schedule.domain.Schedule
 
 @Repository
-interface ScheduleRepository : JpaRepository<Schedule, Long>
+interface ScheduleRepository : JpaRepository<Schedule, Long>, ScheduleQuerydslRepository

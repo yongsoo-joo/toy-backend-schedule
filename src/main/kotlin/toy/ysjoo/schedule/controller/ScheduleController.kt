@@ -32,6 +32,16 @@ class ScheduleController(
         }
     }
 
+    @GetMapping("/title/{title}")
+    fun getSchedule(@PathVariable title: String): String {
+        println("request to get schedule, title = $title")
+        val schedule = scheduleService.get(title)
+        return when (schedule != null) {
+            true -> "success to get schedule, data = $schedule"
+            false -> "don't exist schedule, title = $title"
+        }
+    }
+
     // Read Schedule
     @GetMapping("/all")
     fun getScheduleAll(): String {

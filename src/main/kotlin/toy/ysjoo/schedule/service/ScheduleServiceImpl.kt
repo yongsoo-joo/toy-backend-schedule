@@ -54,6 +54,18 @@ class ScheduleServiceImpl(
      *
      */
     @Transactional(readOnly = true)
+    fun get(title: String): ScheduleDto? {
+        val res = repository.search(title)
+        return when (res != null) {
+            true -> scheduleMapper.toDto(res)
+            false -> null
+        }
+    }
+
+    /**
+     *
+     */
+    @Transactional(readOnly = true)
     override fun getAll(): List<ScheduleDto> {
         val scheduleDtoList = mutableListOf<ScheduleDto>()
         val res = repository.findAll()
