@@ -1,4 +1,4 @@
-package toy.ysjoo.schedule.common
+package toy.ysjoo.schedule.config
 
 import com.querydsl.jpa.impl.JPAQueryFactory
 import org.springframework.context.annotation.Bean

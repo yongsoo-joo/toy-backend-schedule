@@ -5,4 +5,8 @@ import org.springframework.stereotype.Repository
 import toy.ysjoo.schedule.domain.User
 
 @Repository
-interface UserRepository : JpaRepository<User, Long>
+interface UserRepository : JpaRepository<User, Long> {
+    fun findByEmail(email: String): User?
+
+    fun existsByEmail(email: String): Boolean
+}

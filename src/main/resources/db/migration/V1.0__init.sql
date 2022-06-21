@@ -1,10 +1,9 @@
 create table schedule_user
 (
-    id           bigint auto_increment primary key,
-    name         varchar(255) default null,
-    address      varchar(255) default null,
-    phone_number varchar(255) default null,
-    role         varchar(255) default null
+    id       bigint auto_increment primary key,
+    name     varchar(255) default null,
+    email    varchar(255) default null,
+    password varchar(255) default null
 );
 
 create table schedule_schedule

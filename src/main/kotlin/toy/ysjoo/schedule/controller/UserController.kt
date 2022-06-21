@@ -1,27 +1,74 @@
 package toy.ysjoo.schedule.controller
 
+import org.springframework.http.ResponseEntity
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.web.bind.annotation.*
+import toy.ysjoo.schedule.domain.User
+import toy.ysjoo.schedule.dto.LoginDto
 import toy.ysjoo.schedule.dto.UserDto
 import toy.ysjoo.schedule.service.UserServiceImpl
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping
 class UserController(
-    private val userService: UserServiceImpl
+    private val userService: UserServiceImpl,
+    private val passwordEncoder: PasswordEncoder
 ) {
-    // Create User
-    @PostMapping
-    fun addUser(@RequestBody user: UserDto): String {
-        println("request to add user, data = $user")
-        val id = userService.add(user)
-        return when (id > 0) {
-            true -> "success to add user, id = $id"
-            false -> "fail to add user, already exist user id = ${user.id}"
+    // Register User
+    @PostMapping("/register")
+    fun register(@RequestBody userDto: UserDto): ResponseEntity<String> {
+
+        return when (userDto.email != null) {
+            true -> {
+                if (userService.existsUser(userDto.email!!)) {
+                    ResponseEntity.badRequest().body("duplicate email!")
+                }
+                userDto.password = passwordEncoder.encode(userDto.password)
+
+                ResponseEntity.ok(userService.createUser(userDto).toString())
+            }
+            false -> {
+                ResponseEntity.badRequest().body("email is empty")
+            }
         }
     }
 
+    @PostMapping("/login")
+    fun login(@RequestBody loginDto: LoginDto): ResponseEntity<String> {
+        if (!userService.existsUser(loginDto.email)) {
+            ResponseEntity.internalServerError().body("not exist user email!")
+        }
+
+        val user: User? = userService.findUser(loginDto.email)
+
+        return when (user != null) {
+            true -> {
+                if (!passwordEncoder.matches(loginDto.password, user.password)) {
+                    ResponseEntity.badRequest().body("not eqaul password")
+                } else {
+                    userService.login(loginDto)
+                }
+            }
+            false -> {
+                ResponseEntity.badRequest().body("not exist user!")
+            }
+        }
+    }
+
+
+    // Create User
+//    @PostMapping
+//    fun addUser(@RequestBody user: UserDto): String {
+//        println("request to add user, data = $user")
+//        val id = userService.add(user)
+//        return when (id > 0) {
+//            true -> "success to add user, id = $id"
+//            false -> "fail to add user, already exist user id = ${user.id}"
+//        }
+//    }
+
     // Read User
-    @GetMapping("/{id}")
+    @GetMapping("/user/{id}")
     fun getUser(@PathVariable id: Long): String {
         println("request to get user, id = $id")
         val user = userService.get(id)
@@ -32,7 +79,7 @@ class UserController(
     }
 
     // Read User
-    @GetMapping("/all")
+    @GetMapping("/user/all")
     fun getUserAll(): String {
         println("request to get all user info!")
         val userList = userService.getAll()
@@ -54,7 +101,7 @@ class UserController(
     }
 
     // Delete User
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/user/{id}")
     fun deleteUser(@PathVariable id: Long): String {
         println("request to delete user, id = $id")
         return when (userService.delete(id)) {

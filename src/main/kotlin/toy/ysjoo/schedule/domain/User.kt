@@ -1,5 +1,7 @@
 package toy.ysjoo.schedule.domain
 
+import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.userdetails.UserDetails
 import javax.persistence.*
 
 @Entity
@@ -12,12 +14,37 @@ data class User(
     @Column(name = "name")
     var name: String? = null,
 
-    @Column(name = "address")
-    var address: String? = null,
+    @Column(name = "email")
+    var email: String? = null,
 
-    @Column(name = "phone_number")
-    var phoneNumber: String? = null,
+    @Column(name = "password")
+    var m_password: String? = null
+) : UserDetails {
+    override fun getAuthorities(): MutableCollection<out GrantedAuthority>? {
+        return null
+    }
 
-    @Column(name = "role")
-    var role: String? = null
-)
+    override fun getPassword(): String? {
+        return m_password
+    }
+
+    override fun getUsername(): String? {
+        return email
+    }
+
+    override fun isAccountNonExpired(): Boolean {
+        return true
+    }
+
+    override fun isAccountNonLocked(): Boolean {
+        return true
+    }
+
+    override fun isCredentialsNonExpired(): Boolean {
+        return true
+    }
+
+    override fun isEnabled(): Boolean {
+        return true
+    }
+}

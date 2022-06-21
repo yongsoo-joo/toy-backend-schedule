@@ -35,6 +35,13 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 
+    // spring sequrity & jwt
+    implementation("org.springframework.boot:spring-boot-starter-security")
+//    implementation("io.jsonwebtoken:jjwt:0.9.1")
+    implementation("io.jsonwebtoken:jjwt-api:0.11.2")
+    runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.2")
+    runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.2")
+
     // mapstruct
     implementation("org.mapstruct:mapstruct:1.5.1.Final")
     kapt("org.mapstruct:mapstruct-processor:1.5.1.Final")

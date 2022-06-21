@@ -10,6 +10,6 @@ import org.springframework.web.bind.annotation.RestController
 class HealthCheckController {
     @GetMapping
     fun getHealthCheck(): ResponseEntity<Any> {
-        return ResponseEntity.ok().build()
+        return ResponseEntity.ok("Hello! Welcome to Toy Project for Schedule!")
     }
 }

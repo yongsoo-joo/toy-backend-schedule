@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming
 data class UserDto(
     var id: Long = 0,
     var name: String? = null,
-    var address: String? = null,
-    var phoneNumber: String? = null,
-    var role: String? = null
+    var email: String? = null,
+    var password: String? = null
 )
