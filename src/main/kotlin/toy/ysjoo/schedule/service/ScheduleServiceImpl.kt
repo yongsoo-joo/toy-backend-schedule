@@ -11,7 +11,8 @@ import toy.ysjoo.schedule.repository.ScheduleRepository
 @Service
 class ScheduleServiceImpl(
     private val repository: ScheduleRepository,
-    private val scheduleMapper: ScheduleMapper
+    private val scheduleMapper: ScheduleMapper,
+    private val slackService: SlackService
 ) : RestService<ScheduleDto> {
 
     /**
@@ -20,6 +21,7 @@ class ScheduleServiceImpl(
     @Transactional
     override fun add(e: ScheduleDto): Long {
         val res = repository.save(scheduleMapper.toDomain(e))
+        slackService.sendMessage(res.toString())
         return res.id
     }
 

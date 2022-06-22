@@ -57,6 +57,11 @@ dependencies {
     kapt("com.querydsl:querydsl-apt:$querydslVersion:jpa")
     kapt("org.springframework.boot:spring-boot-configuration-processor")
 
+    // Slack Apps
+    implementation("com.slack.api:bolt:1.21.2")
+    implementation("com.slack.api:bolt-servlet:1.21.2")
+    implementation("com.slack.api:bolt-jetty:1.21.2")
+
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
 
