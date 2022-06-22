@@ -31,9 +31,9 @@ spring:
   # slack apps 설정
   slack:
     schedule:
-      token: 'xoxb-912906544022-3697226137122-28y0J86qA5bZfgD7aMti7aWO'
+      token: ''
       channel:
-        monitor: 'C03LVS5BDQR'
+        monitor: ''
 
 #  jwt:
 #    header: Authorization
