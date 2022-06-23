@@ -1,0 +1,32 @@
+version: "3"
+
+services:
+  my-mariadb2:
+    container_name: my-mariadb2
+    image: mariadb:latest
+    restart: always
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./mariadb/my.cnf:/etc/mysql/my.cnf
+      - ./.volumes/mariadb:/var/lib/mysql
+    environment:
+      TZ: Asia/Seoul
+      MARIADB_DATABASE: family
+      MARIADB_ROOT_PASSWORD: admin
+      MARIADB_USER: user
+      MARIADB_PASSWORD: password
+
+  toy-schedule:
+    container_name: toy-schedule-app
+    image:
+      toy-schedule:0.0.1-SNAPSHOT
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+    depends_on:
+      - my-mariadb2
+    extra_hosts:
+      - host.docker.internal:host-gateway

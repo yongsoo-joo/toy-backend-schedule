@@ -1,7 +1,7 @@
 spring:
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://localhost:3307/family?characterEncoding=UTF-8&serverTimezone=UTC;autoReconnect=true
+    url: jdbc:mariadb://host.docker.internal:3307/family?autoReconnect=true
     username: root
     password: 'admin'
 

@@ -1,0 +1,59 @@
+spring:
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: ''
+    username: ''
+    password: ''
+
+  jpa:
+    #    generate-ddl: true
+    hibernate:
+      ddl-auto: none
+    #      ddl-auto: create-drop
+    properties:
+      hibernate:
+        format_sql: true  # To beautify or pretty print the SQL
+        show_sql: true    # Show sql
+  #    defer-datasource-initialization: true
+
+  #  sql:
+  #    init:
+  #      data-locations: classpath:data.sql
+  #      mode: always
+
+  flyway:
+    baseline-on-migrate: true           # flyway_schema_history 테이블을 자동으로 생성할지 여부
+    baseline-version: 1.0               # 최초 버전 정보
+    url: ${spring.datasource.url}
+    user: ${spring.datasource.username}
+    password: ${spring.datasource.password}
+
+  # slack apps 설정
+  slack:
+    schedule:
+      token: ''
+      channel:
+        monitor: ''
+
+  # springdocs
+  springdoc:
+    swagger-ui:
+      enabled: true
+      persistAuthorization: true # 인증 토큰을 SwaggerUI 페이지를 새로고침 하더라도 토큰을 계속 유지시키는 옵션
+    paths-to-match: /**
+    show-actuator: true
+    api-docs:
+      enabled: true
+
+#  jwt:
+#    header: Authorization
+#    #HS512 알고리즘을 사용할 것이기 때문에 512bit, 즉 64byte 이상의 secret key를 사용해야 한다.
+#    #echo 'silvernine-tech-spring-boot-jwt-tutorial-secret-silvernine-tech-spring-boot-jwt-tutorial-secret'|base64
+#    secret: c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK
+#    token-validity-in-seconds: 86400
+
+logging:
+  level:
+    org.hibernate:
+      type.descriptor.sql: trace #show parameter binding
+      SQL: DEBUG

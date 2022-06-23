@@ -1,0 +1,10 @@
+version: "3"
+
+services:
+  family-application:
+    container_name: toy-schedule-app
+    image: 370422684207.dkr.ecr.ap-northeast-2.amazonaws.com/ysjoo:latest
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: deploy
