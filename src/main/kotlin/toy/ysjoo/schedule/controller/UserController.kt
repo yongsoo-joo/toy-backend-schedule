@@ -1,5 +1,7 @@
 package toy.ysjoo.schedule.controller
 
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.springframework.http.ResponseEntity
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.web.bind.annotation.*
@@ -68,6 +70,7 @@ class UserController(
 //    }
 
     // Read User
+    @Operation(security = [SecurityRequirement(name = "Authorization")])
     @GetMapping("/user/{id}")
     fun getUser(@PathVariable id: Long): String {
         println("request to get user, id = $id")
@@ -79,6 +82,7 @@ class UserController(
     }
 
     // Read User
+    @Operation(security = [SecurityRequirement(name = "Authorization")])
     @GetMapping("/user/all")
     fun getUserAll(): String {
         println("request to get all user info!")
@@ -91,7 +95,8 @@ class UserController(
     }
 
     // Update User
-    @PutMapping
+    @Operation(security = [SecurityRequirement(name = "Authorization")])
+    @PutMapping("/user")
     fun updateUser(@RequestBody user: UserDto): String {
         println("request to update user, data = $user")
         return when (userService.update(user)) {
@@ -101,6 +106,7 @@ class UserController(
     }
 
     // Delete User
+    @Operation(security = [SecurityRequirement(name = "Authorization")])
     @DeleteMapping("/user/{id}")
     fun deleteUser(@PathVariable id: Long): String {
         println("request to delete user, id = $id")

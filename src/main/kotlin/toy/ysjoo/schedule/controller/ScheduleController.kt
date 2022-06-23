@@ -1,5 +1,7 @@
 package toy.ysjoo.schedule.controller
 
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.springframework.web.bind.annotation.*
 import toy.ysjoo.schedule.dto.ScheduleDto
 import toy.ysjoo.schedule.service.ScheduleServiceImpl
@@ -11,6 +13,7 @@ class ScheduleController(
 ) {
 
     // Create Schedule
+    @Operation(security = [SecurityRequirement(name = "Authorization")])
     @PostMapping
     fun addSchedule(@RequestBody schedule: ScheduleDto): String {
         println("request to add schedule, data = $schedule")
@@ -22,6 +25,7 @@ class ScheduleController(
     }
 
     // Read Schedule
+    @Operation(security = [SecurityRequirement(name = "Authorization")])
     @GetMapping("/{id}")
     fun getSchedule(@PathVariable id: Long): String {
         println("request to get schedule, id = $id")
@@ -33,6 +37,7 @@ class ScheduleController(
     }
 
     @GetMapping("/title/{title}")
+    @Operation(security = [SecurityRequirement(name = "Authorization")])
     fun getSchedule(@PathVariable title: String): String {
         println("request to get schedule, title = $title")
         val schedule = scheduleService.get(title)
@@ -44,6 +49,7 @@ class ScheduleController(
 
     // Read Schedule
     @GetMapping("/all")
+    @Operation(security = [SecurityRequirement(name = "Authorization")])
     fun getScheduleAll(): String {
         println("request to get all schedule info!")
         val scheduleList = scheduleService.getAll()
@@ -56,6 +62,7 @@ class ScheduleController(
 
     // Update Schedule
     @PutMapping
+    @Operation(security = [SecurityRequirement(name = "Authorization")])
     fun updateSchedule(@RequestBody schedule: ScheduleDto): String {
         println("request to update schedule, data = $schedule")
         return when (scheduleService.update(schedule)) {
@@ -66,6 +73,7 @@ class ScheduleController(
 
     // Delete Schedule
     @DeleteMapping("/{id}")
+    @Operation(security = [SecurityRequirement(name = "Authorization")])
     fun deleteSchedule(@PathVariable id: Long): String {
         println("request to delete schedule, id = $id")
         return when (scheduleService.delete(id)) {

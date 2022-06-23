@@ -62,6 +62,11 @@ dependencies {
     implementation("com.slack.api:bolt-servlet:1.21.2")
     implementation("com.slack.api:bolt-jetty:1.21.2")
 
+    // SpringDocs
+    implementation("org.springdoc:springdoc-openapi-ui:1.6.7")
+    implementation("org.springdoc:springdoc-openapi-kotlin:1.6.7")
+    implementation("org.springdoc:springdoc-openapi-security:1.6.7")
+
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
 

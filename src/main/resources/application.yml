@@ -35,6 +35,16 @@ spring:
       channel:
         monitor: ''
 
+  # springdocs
+  springdoc:
+    swagger-ui:
+      enabled: true
+      persistAuthorization: true # 인증 토큰을 SwaggerUI 페이지를 새로고침 하더라도 토큰을 계속 유지시키는 옵션
+    paths-to-match: /**
+    show-actuator: true
+    api-docs:
+      enabled: true
+
 #  jwt:
 #    header: Authorization
 #    #HS512 알고리즘을 사용할 것이기 때문에 512bit, 즉 64byte 이상의 secret key를 사용해야 한다.
